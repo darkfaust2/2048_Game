@@ -24,7 +24,7 @@ class Game:
 
     def print_screen(self):
         # linux: clear, windows: cls
-        t = os.system("cls")
+        os.system("cls")
         # "\b" is backspace (BS)
         print("\b", end='')
         print("Score: {score}".format(score=self.score))
@@ -140,25 +140,20 @@ class Game:
         return res, add_score
 
     @staticmethod
+    # 0 means "not end"
     def is_end(grid):
-        num_list = grid[0] + grid[1] + grid[2] + grid[3]
-        if min(num_list) == 0:
-            # game is not end
+        min_value = min(min(grid[0]), min(grid[1]), min(grid[2]), min(grid[3]))
+        if min_value == 0:
             return 0
         else:
             possible_add_score = max([Game.up(grid)[1], Game.down(grid)[1], Game.left(grid)[1], Game.right(grid)[1]])
             if possible_add_score > 0:
-                # game is not end
                 return 0
             else:
-                if max(num_list) >= 2048:
-                    # win
-                    return 1
-                else:
-                    # lose
-                    return -1
+                max_value = max(max(grid[0]), max(grid[1]), max(grid[2]), max(grid[3]))
+                return max_value
 
-    # control must in ["w", "a", "s", "d"]
+    # control is one of op in ["w", "a", "s", "d"]
     def update_grid(self, control):
         operator = {"w": Game.up, "a": Game.left, "s": Game.down, "d": Game.right}
         grid, add_score = operator[control](self.grid)
