@@ -17,7 +17,7 @@ class Node:
         if t:
             self.t = t  # threshold
         else:
-            self.t = int(pow(4, w_n[0][1])) * 2048 * 20000
+            self.t = int(pow(4, w_n[0][0])) * 2048 * 20000
         self.scn = 0
 
     def evaluation(self):
