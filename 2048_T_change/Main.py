@@ -15,7 +15,10 @@ Node_list = {0: Node1, 1: Node2}
 algorithm = ["ex1", "ex2"]
 filename = input("Please input the filename of data set: ") + ".csv"
 # T = int(input("Please input the threshold T: "))
-T = 4 * int(pow(4, 15))
+if option == 0:
+    T = 4 * int(pow(4, 15))
+else:
+    T = 4 * 4 * int(pow(4, 15))
 
 with open(filename, "a+", encoding="utf-8", newline="") as f:
     writer = csv.writer(f)
@@ -50,7 +53,10 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
                 scn_list1.append(scn)
                 max_n = max_value
             if scn == 0:
-                T *= 2
+                if option == 0:
+                    T *= 2
+                else:
+                    T = (game.score+max_value*2) * (max_value*2) * int(pow(4, 15))
             # next state
             game.update_grid(action)
             step += 1
