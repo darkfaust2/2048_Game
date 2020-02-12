@@ -16,7 +16,7 @@ class Node:
         if t:
             self.t = t  # threshold
         else:
-            self.t = int(pow(4, w_n[0][1])) * 2048
+            self.t = int(pow(4, w_n[0][0])) * 2048
         self.scn = 0
 
     def evaluation(self):
@@ -94,7 +94,7 @@ class Node:
             for i in range(2):
                 new_grid = deepcopy(self.grid)
                 new_grid[self.position[0]][self.position[1]] = int(pow(2, i+1))
-                child_node = Node(new_grid, self.agent_depth+1, self.max_depth, "Max")
+                child_node = Node(new_grid, self.agent_depth+1, self.max_depth, "Max", t=self.t)
                 child_score, scn_c = child_node.evaluation()
                 average_score += int(p[i]*child_score)
                 if scn == "infinite":
