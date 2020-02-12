@@ -50,7 +50,7 @@ class Node:
                     possible_action.append((new_grid, op))
             scn = "infinite"
             for g in possible_action:
-                child_node = Node(g[0], new_score, self.agent_depth, self.max_depth, "Min")
+                child_node = Node(g[0], new_score, self.agent_depth, self.max_depth, "Min", t=self.t)
                 child_score, scn_c = child_node.evaluation()
                 if child_score >= max_score:
                     max_score = child_score
@@ -78,7 +78,7 @@ class Node:
             for i in range(tiles):
                 new_grid = deepcopy(self.grid)
                 new_position = possible_position[i][1]
-                child_node = Node(new_grid, self.score, self.agent_depth, self.max_depth, "Chance", new_position)
+                child_node = Node(new_grid, self.score, self.agent_depth, self.max_depth, "Chance", new_position, t=self.t)
                 child_score, scn_c = child_node.evaluation()
                 if child_score < min_score:
                     min_score = child_score
@@ -97,7 +97,7 @@ class Node:
             for i in range(2):
                 new_grid = deepcopy(self.grid)
                 new_grid[self.position[0]][self.position[1]] = int(pow(2, i+1))
-                child_node = Node(new_grid, self.score, self.agent_depth+1, self.max_depth, "Max")
+                child_node = Node(new_grid, self.score, self.agent_depth+1, self.max_depth, "Max", t=self.t)
                 child_score, scn_c = child_node.evaluation()
                 average_score += int(p[i] * child_score)
                 if scn == "infinite":
