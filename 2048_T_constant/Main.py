@@ -34,29 +34,37 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         game = Game()
         game.random_field()
         game.random_field()
-        scn = None
         while not game.is_end(game.grid):
+            if option == 0:
+                node = Node_list[option](game.grid, 0, max_depth, "Max", t=T)
+            else:
+                node = Node_list[option](game.grid, self.score, 0, max_depth, "Max", t=T)
+            action, scn = node.evaluation()
+            scn_list2.append(scn)
+            print("scn:{s}".format(s=scn))
             game.print_screen()
             max_value = max_v(game.grid)
             if max_value > max_n:
                 score_list.append(game.score)
                 scn_list1.append(scn)
                 max_n = max_value
-            if option == 0:
-                node = Node_list[option](game.grid, 0, max_depth, "Max", t=T)
-            else:
-                node = Node_list[option](game.grid, 0, 0, max_depth, "Max", t=T)
-            action, scn = node.evaluation()
-            print("scn:{s}".format(s=scn))
-            scn_list2.append(scn)
+            # next state
             game.update_grid(action)
             step += 1
             game.random_field()
+        if option == 0:
+            terminal_node = Node_list[option](game.grid, 0, max_depth, "Max", t=T)
+        else:
+            terminal_node = Node_list[option](game.grid, self.score, 0, max_depth, "Max", t=T)
+        scn = terminal_node.evaluation()[1]
+        scn_list2.append(scn)
+        print("scn:{s}".format(s=scn))
         game.print_screen()
         max_value = max_v(game.grid)
         if max_value > max_n:
             score_list.append(game.score)
             scn_list1.append(scn)
+            max_n = max_value
         avg_score += game.score / game_count
         avg_steps += step / game_count
         writer.writerow([step, game.score, max_value])
