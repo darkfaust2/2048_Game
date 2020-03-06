@@ -17,9 +17,9 @@ filename = input("Please input the filename of data set: ") + ".csv"
 a = int(input("Please input the threshold a: "))
 # T = int(input("Please input the threshold T: "))
 if option == 0:
-    T = 4 * int(pow(4, 15))
+    T = 8 * int(pow(4, 15))
 else:
-    T = 4 * 4 * int(pow(4, 15))
+    T = 8 * 8 * int(pow(4, 15))
 
 with open(filename, "a+", encoding="utf-8", newline="") as f:
     writer = csv.writer(f)
@@ -35,29 +35,32 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         scn_list1 = []
         scn_list2 = []
         step = 0
-        max_n = 2
+        flag, max_n = 8, 8
         game = Game()
         game.random_field()
         game.random_field()
         while not game.is_end(game.grid):
+            max_value = max_v(game.grid)
+            # print(max_value, max_n)
+            if max_value >= max_n:
+                max_n *= int(pow(2, a))
+                if option == 0:
+                    T *= int(pow(2, a))
+                else:
+                    T = (game.score + max_value * int(pow(2, a))) * (max_value * int(pow(2, a))) * int(pow(4, 15))
             if option == 0:
                 node = Node_list[option](game.grid, 0, max_depth, "Max", t=T)
             else:
                 node = Node_list[option](game.grid, game.score, 0, max_depth, "Max", t=T)
             action, scn = node.evaluation()
+            if max_value >= flag:
+                flag *= 2
+                scn_list1.append(scn)
+                score_list.append(game.score)
             scn_list2.append(scn)
             print("scn:{s}".format(s=scn))
+            # print("T:{t}".format(t=T))
             game.print_screen()
-            max_value = max_v(game.grid)
-            if max_value > max_n:
-                score_list.append(game.score)
-                scn_list1.append(scn)
-                max_n = max_value
-            if scn == 0:
-                if option == 0:
-                    T *= int(pow(2, a))
-                else:
-                    T = (game.score+max_value*int(pow(2, a))) * (max_value*int(pow(2, a))) * int(pow(4, 15))
             # next state
             game.update_grid(action)
             step += 1
@@ -71,14 +74,13 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         # print("scn:{s}".format(s=scn))
         game.print_screen()
         max_value = max_v(game.grid)
-        if max_value > max_n:
-            score_list.append(game.score)
+        if max_value >= flag:
             scn_list1.append(scn)
-            max_n = max_value
+            score_list.append(game.score)
         avg_score += game.score / game_count
         avg_steps += step / game_count
         writer.writerow([step, game.score, max_value])
-        writer.writerow([int(pow(2, i)) for i in range(2, len(score_list)+2)])
+        writer.writerow([int(pow(2, i)) for i in range(3, len(score_list)+3)])
         writer.writerow(score_list)
         writer.writerow(scn_list1)
         writer.writerow(scn_list2)
