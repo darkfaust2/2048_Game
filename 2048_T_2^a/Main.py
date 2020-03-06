@@ -35,15 +35,15 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         scn_list1 = []
         scn_list2 = []
         step = 0
-        flag, max_n = 8, 8
+        flag, next_n = 8, 8
         game = Game()
         game.random_field()
         game.random_field()
         while not game.is_end(game.grid):
             max_value = max_v(game.grid)
             # print(max_value, max_n)
-            if max_value >= max_n:
-                max_n *= int(pow(2, a))
+            if max_value >= next_n:
+                next_n *= int(pow(2, a))
                 if option == 0:
                     T *= int(pow(2, a))
                 else:
