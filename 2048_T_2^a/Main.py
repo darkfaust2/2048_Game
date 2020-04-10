@@ -87,3 +87,4 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         writer.writerow(scn_list2)
     writer.writerow(["algorithm", "max_depth", "game_count", "Avg(score)", "Avg(steps)"])
     writer.writerow([algorithm[option], max_depth, game_count, int(avg_score), int(round(avg_steps))])
+    
