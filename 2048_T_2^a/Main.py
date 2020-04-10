@@ -19,11 +19,6 @@ Node_list = {0: Node1, 1: Node2}
 algorithm = ["ex1", "ex2"]
 filename = input("Please input the filename of data set: ") + ".csv"
 a = int(input("Please input the threshold a (a>0): "))
-# T = int(input("Please input the threshold T: "))
-if option == 0:
-    T = 8 * int(pow(4, 15))
-else:
-    T = score_index[8] * 8 * int(pow(4, 15))
 
 with open(filename, "a+", encoding="utf-8", newline="") as f:
     writer = csv.writer(f)
@@ -35,6 +30,10 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
             writer.writerow([])
     writer.writerow(["steps", "score", "max_num"])
     for k in range(game_count):
+        if option == 0:
+            T = 8 * int(pow(4, 15))
+        else:
+            T = score_index[8] * 8 * int(pow(4, 15))
         score_list = []
         scn_list1 = []
         scn_list2 = []
@@ -88,4 +87,3 @@ with open(filename, "a+", encoding="utf-8", newline="") as f:
         writer.writerow(scn_list2)
     writer.writerow(["algorithm", "max_depth", "game_count", "Avg(score)", "Avg(steps)"])
     writer.writerow([algorithm[option], max_depth, game_count, int(avg_score), int(round(avg_steps))])
-    
